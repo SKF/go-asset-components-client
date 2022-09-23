@@ -1,0 +1,1 @@
+# go-asset-component-client
