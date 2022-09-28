@@ -1,0 +1,3 @@
+*.go -text diff=golang
+*.sum linguist-generated
+rest/openapi.json linguist-generated

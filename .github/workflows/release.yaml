@@ -1,0 +1,32 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate
+        run: make rest/models/
+
+      - name: Commit
+        run: |
+          git add --force --all
+
+          git config user.email "github-action@users.noreply.github.com"
+          git config user.name "Github"
+
+          git commit --verbose --allow-empty \
+            -m "Generating files for ${GITHUB_REF/refs\/tags\//}"
+
+      - name: Push
+        run: |
+          git push --delete origin ${GITHUB_REF}
+          git push --force origin HEAD:${GITHUB_REF}
