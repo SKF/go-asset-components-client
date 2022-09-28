@@ -5,12 +5,12 @@ API_URL := "https://api.sandbox.asset-components.enlight.skf.com"
 OPENAPITOOLS_VERSION := v6.1.0
 
 .PHONY: all
-all: rest/models rest/openapi.yaml
+all: rest/models/ rest/openapi.yaml
 
 rest/openapi.yaml:
 	$(WGET) "$(API_URL)/docs/swagger/openapi.yaml" -O "$@"
 
-rest/models: rest/openapi.yaml
+rest/models/: rest/openapi.yaml
 	$(DOCKER) run --rm \
 		--volume $(shell pwd):/src \
 		--workdir /src \
