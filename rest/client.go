@@ -38,6 +38,7 @@ func NewClient(opts ...Option) Client {
 
 	return &client{Client: restClient}
 }
+
 func (c *client) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter GetComponentsFilter) ([]models.Component, error) {
 	request := rest.Get("assets/{asset}/components{?type*}").
 		Assign("asset", id).
