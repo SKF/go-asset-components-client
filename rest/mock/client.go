@@ -25,7 +25,12 @@ func (c *AssetComponentsMock) GetComponentsByAsset(ctx context.Context, id uuid.
 	return args.Get(0).([]models.Component), args.Error(1)
 }
 
-func (c *AssetComponentsMock) GetAllComponentRelations(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
+func (c *AssetComponentsMock) GetComponentRelations(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
 	args := c.Called(ctx, id, limit, continuationToken)
 	return args.Get(0).(models.GetComponentRelationsResponse), args.Error(1)
+}
+
+func (c *AssetComponentsMock) GetRelatedComponents(ctx context.Context, id uuid.UUID, limit int, source, relationType, continuationToken string) (models.GetRelatedComponentsResponse, error) {
+	args := c.Called(ctx, id, limit, source, relationType, continuationToken)
+	return args.Get(0).(models.GetRelatedComponentsResponse), args.Error(1)
 }
