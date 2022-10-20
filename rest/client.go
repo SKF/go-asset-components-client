@@ -16,6 +16,8 @@ type GetComponentsFilter struct {
 
 type Client interface {
 	GetComponentsByAsset(context.Context, uuid.UUID, GetComponentsFilter) ([]models.Component, error)
+
+	GetAllComponentRelations(context.Context, uuid.UUID, int, string) (models.GetComponentRelationsResponse, error)
 }
 
 type client struct {
@@ -48,4 +50,19 @@ func (c *client) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter 
 	}
 
 	return response.Components, nil
+}
+
+func (c *client) GetAllComponentRelations(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
+	request := rest.Get("/components/{component}/relations{?limit,continuation_token*}").
+		Assign("component", id).
+		Assign("limit", limit).
+		Assign("continuation_token", continuationToken).
+		SetHeader("Accept", "application/json")
+
+	var response models.GetComponentRelationsResponse
+	if err := c.DoAndUnmarshal(ctx, request, &response); err != nil {
+		return models.GetComponentRelationsResponse{}, err
+	}
+
+	return response, nil
 }
