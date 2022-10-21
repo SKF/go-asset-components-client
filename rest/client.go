@@ -19,6 +19,8 @@ type Client interface {
 
 	GetComponentRelations(context.Context, uuid.UUID, int, string) (models.GetComponentRelationsResponse, error)
 	GetRelatedComponents(context.Context, uuid.UUID, int, string, string, string) (models.GetRelatedComponentsResponse, error)
+	CreateComponentRelation(ctx context.Context, id uuid.UUID, relation models.Relation) error
+	DeleteComponentRelation(ctx context.Context, externalID, componentID uuid.UUID, source, relationType string) (err error)
 }
 
 type client struct {
@@ -83,4 +85,32 @@ func (c *client) GetRelatedComponents(ctx context.Context, id uuid.UUID, limit i
 	}
 
 	return response, nil
+}
+
+func (c *client) CreateComponentRelation(ctx context.Context, id uuid.UUID, relation models.Relation) error {
+	request := rest.Put("/components/{component}/relations").
+		Assign("component", id).
+		WithJSONPayload(relation).
+		SetHeader("Accept", "application/json")
+
+	if _, err := c.Do(ctx, request); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *client) DeleteComponentRelation(ctx context.Context, externalID, componentID uuid.UUID, source, relationType string) (err error) {
+	request := rest.Delete("/relations/{source}/{type}/{id}/components/{component}").
+		Assign("component", componentID).
+		Assign("source", source).
+		Assign("type", relationType).
+		Assign("id", externalID).
+		SetHeader("Accept", "application/json")
+
+	if _, err = c.Do(ctx, request); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -35,3 +35,13 @@ func (c *AssetComponentsMock) GetRelatedComponents(ctx context.Context, id uuid.
 	args := c.Called(ctx, id, limit, source, relationType, continuationToken)
 	return args.Get(0).(models.GetRelatedComponentsResponse), args.Error(1)
 }
+
+func (c *AssetComponentsMock) CreateComponentRelation(ctx context.Context, id uuid.UUID, relation models.Relation) error {
+	args := c.Called(ctx, id, relation)
+	return args.Error(0)
+}
+
+func (c *AssetComponentsMock) DeleteComponentRelation(ctx context.Context, externalID, componentID uuid.UUID, source, relationType string) (err error) {
+	args := c.Called(ctx, externalID, componentID, source, relationType)
+	return args.Error(0)
+}
