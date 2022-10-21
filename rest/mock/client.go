@@ -41,7 +41,7 @@ func (c *AssetComponentsMock) CreateComponentRelation(ctx context.Context, id uu
 	return args.Error(0)
 }
 
-func (c *AssetComponentsMock) DeleteComponentRelation(ctx context.Context, externalID, componentID uuid.UUID, source, relationType string) (err error) {
+func (c *AssetComponentsMock) DeleteComponentRelation(ctx context.Context, externalID, componentID uuid.UUID, source, relationType string) error {
 	args := c.Called(ctx, externalID, componentID, source, relationType)
 	return args.Error(0)
 }
