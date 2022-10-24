@@ -20,9 +20,7 @@ type Client interface {
 	GetComponentsByAsset(context.Context, uuid.UUID, GetComponentsFilter) ([]models.Component, error)
 
 	GetComponentRelations(context.Context, uuid.UUID) ([]models.Relation, error)
-	GetComponentRelationsPage(context.Context, uuid.UUID, int, string) (models.GetComponentRelationsResponse, error)
 	GetRelatedComponents(context.Context, models.Relation) ([]models.RelatedComponent, error)
-	GetRelatedComponentsPage(context.Context, models.Relation, int, string) (models.GetRelatedComponentsResponse, error)
 	CreateComponentRelation(context.Context, models.Relation, uuid.UUID) error
 	DeleteComponentRelation(context.Context, models.Relation, uuid.UUID) (err error)
 }
@@ -60,7 +58,7 @@ func (c *client) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter 
 }
 
 func (c *client) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]models.Relation, error) {
-	response, err := c.GetComponentRelationsPage(ctx, id, 0, "")
+	response, err := c.getComponentRelationsPage(ctx, id, 0, "")
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +71,7 @@ func (c *client) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]mod
 			return nil, err
 		}
 
-		response, err = c.GetComponentRelationsPage(ctx, id, 0, continuationToken)
+		response, err = c.getComponentRelationsPage(ctx, id, 0, continuationToken)
 		if err != nil {
 			return nil, err
 		}
@@ -84,7 +82,7 @@ func (c *client) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]mod
 	return relations, nil
 }
 
-func (c *client) GetComponentRelationsPage(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
+func (c *client) getComponentRelationsPage(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
 	request := rest.Get("/components/{component}/relations{?limit,continuation_token*}").
 		Assign("component", id).
 		Assign("limit", limit).
@@ -100,7 +98,7 @@ func (c *client) GetComponentRelationsPage(ctx context.Context, id uuid.UUID, li
 }
 
 func (c *client) GetRelatedComponents(ctx context.Context, relation models.Relation) ([]models.RelatedComponent, error) {
-	response, err := c.GetRelatedComponentsPage(ctx, relation, 0, "")
+	response, err := c.getRelatedComponentsPage(ctx, relation, 0, "")
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +111,7 @@ func (c *client) GetRelatedComponents(ctx context.Context, relation models.Relat
 			return nil, err
 		}
 
-		response, err = c.GetRelatedComponentsPage(ctx, relation, 0, continuationToken)
+		response, err = c.getRelatedComponentsPage(ctx, relation, 0, continuationToken)
 		if err != nil {
 			return nil, err
 		}
@@ -124,7 +122,7 @@ func (c *client) GetRelatedComponents(ctx context.Context, relation models.Relat
 	return relatedComponents, nil
 }
 
-func (c *client) GetRelatedComponentsPage(ctx context.Context, relation models.Relation, limit int, continuationToken string) (models.GetRelatedComponentsResponse, error) {
+func (c *client) getRelatedComponentsPage(ctx context.Context, relation models.Relation, limit int, continuationToken string) (models.GetRelatedComponentsResponse, error) {
 	request := rest.Get("/relations/{source}/{type}/{id}/components{?limit,continuation_token*}").
 		Assign("source", relation.Source).
 		Assign("type", relation.Type).

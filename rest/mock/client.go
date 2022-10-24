@@ -31,19 +31,9 @@ func (c *AssetComponentsMock) GetComponentRelations(ctx context.Context, id uuid
 	return args.Get(0).([]models.Relation), args.Error(1)
 }
 
-func (c *AssetComponentsMock) GetComponentRelationsPage(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
-	args := c.Called(ctx, id, limit, continuationToken)
-	return args.Get(0).(models.GetComponentRelationsResponse), args.Error(1)
-}
-
 func (c *AssetComponentsMock) GetRelatedComponents(ctx context.Context, relation models.Relation) ([]models.RelatedComponent, error) {
 	args := c.Called(ctx, relation)
 	return args.Get(0).([]models.RelatedComponent), args.Error(1)
-}
-
-func (c *AssetComponentsMock) GetRelatedComponentsPage(ctx context.Context, relation models.Relation, limit int, continuationToken string) (models.GetRelatedComponentsResponse, error) {
-	args := c.Called(ctx, relation, limit, continuationToken)
-	return args.Get(0).(models.GetRelatedComponentsResponse), args.Error(1)
 }
 
 func (c *AssetComponentsMock) CreateComponentRelation(ctx context.Context, relation models.Relation, id uuid.UUID) error {
