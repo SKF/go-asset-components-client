@@ -21,27 +21,37 @@ func NewAssetComponentsMock() *AssetComponentsMock {
 	return &AssetComponentsMock{&mock.Mock{}}
 }
 
-func (c *AssetComponentsMock) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter rest.GetComponentsFilter) ([]models.Component, error) {
+func (c AssetComponentsMock) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter rest.GetComponentsFilter) ([]models.Component, error) {
 	args := c.Called(ctx, id, filter)
 	return args.Get(0).([]models.Component), args.Error(1)
 }
 
-func (c *AssetComponentsMock) GetComponentRelations(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
+func (c AssetComponentsMock) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]models.Relation, error) {
+	args := c.Called(ctx, id)
+	return args.Get(0).([]models.Relation), args.Error(1)
+}
+
+func (c AssetComponentsMock) GetComponentRelationsPage(ctx context.Context, id uuid.UUID, limit int, continuationToken string) (models.GetComponentRelationsResponse, error) {
 	args := c.Called(ctx, id, limit, continuationToken)
 	return args.Get(0).(models.GetComponentRelationsResponse), args.Error(1)
 }
 
-func (c *AssetComponentsMock) GetRelatedComponents(ctx context.Context, id uuid.UUID, limit int, source, relationType, continuationToken string) (models.GetRelatedComponentsResponse, error) {
-	args := c.Called(ctx, id, limit, source, relationType, continuationToken)
+func (c AssetComponentsMock) GetRelatedComponents(ctx context.Context, relation models.Relation) ([]models.RelatedComponent, error) {
+	args := c.Called(ctx, relation)
+	return args.Get(0).([]models.RelatedComponent), args.Error(1)
+}
+
+func (c AssetComponentsMock) GetRelatedComponentsPage(ctx context.Context, relation models.Relation, limit int, continuationToken string) (models.GetRelatedComponentsResponse, error) {
+	args := c.Called(ctx, relation, limit, continuationToken)
 	return args.Get(0).(models.GetRelatedComponentsResponse), args.Error(1)
 }
 
-func (c *AssetComponentsMock) CreateComponentRelation(ctx context.Context, id uuid.UUID, relation models.Relation) error {
-	args := c.Called(ctx, id, relation)
+func (c AssetComponentsMock) CreateComponentRelation(ctx context.Context, relation models.Relation, id uuid.UUID) error {
+	args := c.Called(ctx, relation, id)
 	return args.Error(0)
 }
 
-func (c *AssetComponentsMock) DeleteComponentRelation(ctx context.Context, externalID, componentID uuid.UUID, source, relationType string) error {
-	args := c.Called(ctx, externalID, componentID, source, relationType)
+func (c AssetComponentsMock) DeleteComponentRelation(ctx context.Context, relation models.Relation, id uuid.UUID) (err error) {
+	args := c.Called(ctx, relation, id)
 	return args.Error(0)
 }
