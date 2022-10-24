@@ -17,6 +17,7 @@ type GetComponentsFilter struct {
 }
 
 type Client interface {
+	GetComponent(context.Context, uuid.UUID) (models.Component, error)
 	GetComponentsByAsset(context.Context, uuid.UUID, GetComponentsFilter) ([]models.Component, error)
 
 	GetComponentRelations(context.Context, uuid.UUID) ([]models.Relation, error)
@@ -41,6 +42,19 @@ func NewClient(opts ...Option) Client {
 	)
 
 	return &client{Client: restClient}
+}
+
+func (c *client) GetComponent(ctx context.Context, id uuid.UUID) (models.Component, error) {
+	request := rest.Get("components/{component}").
+		Assign("component", id).
+		SetHeader("Accept", "application/json")
+
+	var response models.Component
+	if err := c.DoAndUnmarshal(ctx, request, &response); err != nil {
+		return models.Component{}, err
+	}
+
+	return response, nil
 }
 
 func (c *client) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter GetComponentsFilter) ([]models.Component, error) {
