@@ -25,3 +25,23 @@ func (c *AssetComponentsMock) GetComponentsByAsset(ctx context.Context, id uuid.
 	args := c.Called(ctx, id, filter)
 	return args.Get(0).([]models.Component), args.Error(1)
 }
+
+func (c *AssetComponentsMock) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]models.Relation, error) {
+	args := c.Called(ctx, id)
+	return args.Get(0).([]models.Relation), args.Error(1)
+}
+
+func (c *AssetComponentsMock) GetRelatedComponents(ctx context.Context, relation models.Relation) ([]models.RelatedComponent, error) {
+	args := c.Called(ctx, relation)
+	return args.Get(0).([]models.RelatedComponent), args.Error(1)
+}
+
+func (c *AssetComponentsMock) CreateComponentRelation(ctx context.Context, relation models.Relation, id uuid.UUID) error {
+	args := c.Called(ctx, relation, id)
+	return args.Error(0)
+}
+
+func (c *AssetComponentsMock) DeleteComponentRelation(ctx context.Context, relation models.Relation, id uuid.UUID) (err error) {
+	args := c.Called(ctx, relation, id)
+	return args.Error(0)
+}
