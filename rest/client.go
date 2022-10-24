@@ -60,7 +60,7 @@ func (c *client) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter 
 }
 
 func (c *client) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]models.Relation, error) {
-	response, err := c.GetComponentRelationsPage(ctx, id, 1, "")
+	response, err := c.GetComponentRelationsPage(ctx, id, 0, "")
 	if err != nil {
 		return nil, err
 	}
