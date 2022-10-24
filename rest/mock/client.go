@@ -21,6 +21,11 @@ func NewAssetComponentsMock() *AssetComponentsMock {
 	return &AssetComponentsMock{&mock.Mock{}}
 }
 
+func (c *AssetComponentsMock) GetComponent(ctx context.Context, id uuid.UUID) (models.GetComponentResponse, error) {
+	args := c.Called(ctx, id)
+	return args.Get(0).(models.GetComponentResponse), args.Error(1)
+}
+
 func (c *AssetComponentsMock) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter rest.GetComponentsFilter) ([]models.Component, error) {
 	args := c.Called(ctx, id, filter)
 	return args.Get(0).([]models.Component), args.Error(1)
