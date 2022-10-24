@@ -5,10 +5,10 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/SKF/go-utility/v2/uuid"
-
 	"github.com/SKF/go-asset-components-client/rest"
 	"github.com/SKF/go-asset-components-client/rest/models"
+
+	"github.com/SKF/go-utility/v2/uuid"
 )
 
 var _ rest.Client = &AssetComponentsMock{}
