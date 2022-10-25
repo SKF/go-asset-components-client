@@ -31,6 +31,11 @@ func (c *AssetComponentsMock) GetComponentsByAsset(ctx context.Context, id uuid.
 	return args.Get(0).([]models.Component), args.Error(1)
 }
 
+func (c *AssetComponentsMock) CreateComponent(ctx context.Context, component models.Component) (models.Component, error) {
+	args := c.Called(ctx, component)
+	return args.Get(0).(models.Component), args.Error(1)
+}
+
 func (c *AssetComponentsMock) DeleteComponent(ctx context.Context, id uuid.UUID) error {
 	args := c.Called(ctx, id)
 	return args.Error(0)
