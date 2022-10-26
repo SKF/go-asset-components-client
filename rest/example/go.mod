@@ -8,7 +8,6 @@ require (
 	github.com/SKF/go-asset-components-client v0.0.0
 	github.com/SKF/go-rest-utility v0.12.0
 	github.com/SKF/go-utility/v2 v2.31.0
-	github.com/aws/aws-sdk-go v1.44.123
 	gopkg.in/DataDog/dd-trace-go.v1 v1.43.0
 )
 
@@ -18,6 +17,7 @@ require (
 	github.com/DataDog/sketches-go v1.4.1 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
 	github.com/SKF/go-enlight-middleware v0.6.0 // indirect
+	github.com/aws/aws-sdk-go v1.44.123 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.17.1 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.25 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.19 // indirect
