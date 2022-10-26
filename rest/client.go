@@ -19,6 +19,8 @@ type GetComponentsFilter struct {
 type Client interface {
 	GetComponent(context.Context, uuid.UUID) (models.Component, error)
 	GetComponentsByAsset(context.Context, uuid.UUID, GetComponentsFilter) ([]models.Component, error)
+	CreateComponent(context.Context, models.Component) (models.Component, error)
+	DeleteComponent(context.Context, uuid.UUID) error
 
 	GetComponentRelations(context.Context, uuid.UUID) ([]models.Relation, error)
 	GetRelatedComponents(context.Context, models.Relation) ([]models.RelatedComponent, error)
@@ -69,6 +71,31 @@ func (c *client) GetComponentsByAsset(ctx context.Context, id uuid.UUID, filter 
 	}
 
 	return response.Components, nil
+}
+
+func (c *client) CreateComponent(ctx context.Context, component models.Component) (models.Component, error) {
+	request := rest.Post("/components").
+		WithJSONPayload(component).
+		SetHeader("Accept", "application/json")
+
+	var response models.Component
+	if err := c.DoAndUnmarshal(ctx, request, &response); err != nil {
+		return models.Component{}, err
+	}
+
+	return response, nil
+}
+
+func (c *client) DeleteComponent(ctx context.Context, id uuid.UUID) error {
+	request := rest.Delete("components/{component}").
+		Assign("component", id).
+		SetHeader("Accept", "application/json")
+
+	if _, err := c.Do(ctx, request); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c *client) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]models.Relation, error) {
