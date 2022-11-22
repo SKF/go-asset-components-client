@@ -100,7 +100,8 @@ func (c *client) DeleteComponent(ctx context.Context, id uuid.UUID) error {
 }
 
 func (c *client) UpdateComponent(ctx context.Context, component models.Component) (models.Component, error) {
-	request := rest.Patch("/components").
+	request := rest.Patch("components/{component}").
+		Assign("component", *component.Id).
 		WithJSONPayload(component).
 		SetHeader("Accept", "application/json")
 
