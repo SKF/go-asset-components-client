@@ -21,6 +21,7 @@ type Client interface {
 	GetComponentsByAsset(context.Context, uuid.UUID, GetComponentsFilter) ([]models.Component, error)
 	CreateComponent(context.Context, models.Component) (models.Component, error)
 	DeleteComponent(context.Context, uuid.UUID) error
+	UpdateComponent(context.Context, models.Component) (models.Component, error)
 
 	GetComponentRelations(context.Context, uuid.UUID) ([]models.Relation, error)
 	GetRelatedComponents(context.Context, models.Relation) ([]models.RelatedComponent, error)
@@ -96,6 +97,20 @@ func (c *client) DeleteComponent(ctx context.Context, id uuid.UUID) error {
 	}
 
 	return nil
+}
+
+func (c *client) UpdateComponent(ctx context.Context, component models.Component) (models.Component, error) {
+	request := rest.Patch("components/{component}").
+		Assign("component", *component.Id).
+		WithJSONPayload(component).
+		SetHeader("Accept", "application/json")
+
+	var response models.Component
+	if err := c.DoAndUnmarshal(ctx, request, &response); err != nil {
+		return models.Component{}, err
+	}
+
+	return response, nil
 }
 
 func (c *client) GetComponentRelations(ctx context.Context, id uuid.UUID) ([]models.Relation, error) {
