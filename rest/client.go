@@ -203,14 +203,12 @@ func (c *client) CreateComponentRelation(ctx context.Context, relation models.Re
 		WithJSONPayload(relation).
 		SetHeader("Accept", "application/json")
 
-	if _, err := c.Do(ctx, request); err != nil {
-		return err
-	}
+	_, err := c.Do(ctx, request)
 
-	return nil
+	return err
 }
 
-func (c *client) DeleteComponentRelation(ctx context.Context, relation models.Relation, id uuid.UUID) (err error) {
+func (c *client) DeleteComponentRelation(ctx context.Context, relation models.Relation, id uuid.UUID) error {
 	request := rest.Delete("/relations/{source}/{type}/{id}/components/{component}").
 		Assign("source", relation.Source).
 		Assign("type", relation.Type).
@@ -218,9 +216,9 @@ func (c *client) DeleteComponentRelation(ctx context.Context, relation models.Re
 		Assign("component", id).
 		SetHeader("Accept", "application/json")
 
-	_, err = c.Do(ctx, request)
+	_, err := c.Do(ctx, request)
 
-	return nil
+	return err
 }
 
 func getContinuationToken(nextLink string) (string, error) {
