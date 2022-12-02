@@ -25,4 +25,4 @@ rest/models/: rest/openapi.yaml
 
 .PHONY: clean
 clean:
-	$(RM) -r "rest/models" "rest/openapi.yaml"
+	$(RM) rest/models/model_* rest/openapi.yaml
