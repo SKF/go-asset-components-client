@@ -65,3 +65,18 @@ func (c *AssetComponentsMock) DeleteComponentRelation(ctx context.Context, relat
 	args := c.Called(ctx, relation, id)
 	return args.Error(0)
 }
+
+func (c *AssetComponentsMock) GetComponentSpeed(ctx context.Context, id uuid.UUID) (models.GetComponentSpeedResponse, error) {
+	args := c.Called(ctx, id)
+	return args.Get(0).(models.GetComponentSpeedResponse), args.Error(1)
+}
+
+func (c *AssetComponentsMock) SetComponentSpeed(ctx context.Context, id uuid.UUID, speedConfiguration models.SpeedConfiguration) (models.PutComponentSpeedResponse, error) {
+	args := c.Called(ctx, id, speedConfiguration)
+	return args.Get(0).(models.PutComponentSpeedResponse), args.Error(1)
+}
+
+func (c *AssetComponentsMock) DeleteComponentSpeed(ctx context.Context, id uuid.UUID) error {
+	args := c.Called(ctx, id)
+	return args.Error(0)
+}

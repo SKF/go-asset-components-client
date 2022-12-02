@@ -1,6 +1,8 @@
 # Reference of settings:
 # https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml
-
+run:
+  skip-dirs:
+    - rest/models
 # all available settings of specific linters
 linters-settings:
   errcheck:

@@ -27,6 +27,10 @@ type Client interface {
 	GetRelatedComponents(context.Context, models.Relation) ([]models.RelatedComponent, error)
 	CreateComponentRelation(context.Context, models.Relation, uuid.UUID) error
 	DeleteComponentRelation(context.Context, models.Relation, uuid.UUID) (err error)
+
+	GetComponentSpeed(context.Context, uuid.UUID) (models.GetComponentSpeedResponse, error)
+	SetComponentSpeed(context.Context, uuid.UUID, models.SpeedConfiguration) (models.PutComponentSpeedResponse, error)
+	DeleteComponentSpeed(context.Context, uuid.UUID) error
 }
 
 type client struct {
@@ -92,11 +96,9 @@ func (c *client) DeleteComponent(ctx context.Context, id uuid.UUID) error {
 		Assign("component", id).
 		SetHeader("Accept", "application/json")
 
-	if _, err := c.Do(ctx, request); err != nil {
-		return err
-	}
+	_, err := c.Do(ctx, request)
 
-	return nil
+	return err
 }
 
 func (c *client) UpdateComponent(ctx context.Context, component models.Component) (models.Component, error) {
@@ -216,9 +218,7 @@ func (c *client) DeleteComponentRelation(ctx context.Context, relation models.Re
 		Assign("component", id).
 		SetHeader("Accept", "application/json")
 
-	if _, err = c.Do(ctx, request); err != nil {
-		return err
-	}
+	_, err = c.Do(ctx, request)
 
 	return nil
 }
@@ -237,4 +237,41 @@ func getContinuationToken(nextLink string) (string, error) {
 	}
 
 	return continuationToken, nil
+}
+
+func (c *client) GetComponentSpeed(ctx context.Context, id uuid.UUID) (models.GetComponentSpeedResponse, error) {
+	request := rest.Get("/components/{component}/speed").
+		Assign("component", id).
+		SetHeader("Accept", "application/json")
+
+	var response models.GetComponentSpeedResponse
+	if err := c.DoAndUnmarshal(ctx, request, &response); err != nil {
+		return models.GetComponentSpeedResponse{}, err
+	}
+
+	return response, nil
+}
+
+func (c *client) SetComponentSpeed(ctx context.Context, id uuid.UUID, speedConfiguraion models.SpeedConfiguration) (models.PutComponentSpeedResponse, error) {
+	request := rest.Put("/components/{component}/speed").
+		Assign("component", id).
+		WithJSONPayload(models.PutComponentSpeedRequest{Configuration: speedConfiguraion}).
+		SetHeader("Accept", "application/json")
+
+	var response models.PutComponentSpeedResponse
+	if err := c.DoAndUnmarshal(ctx, request, &response); err != nil {
+		return models.PutComponentSpeedResponse{}, err
+	}
+
+	return response, nil
+}
+
+func (c *client) DeleteComponentSpeed(ctx context.Context, id uuid.UUID) error {
+	request := rest.Delete("/components/{component}/speed").
+		Assign("component", id).
+		SetHeader("Accept", "application/json")
+
+	_, err := c.Do(ctx, request)
+
+	return err
 }
