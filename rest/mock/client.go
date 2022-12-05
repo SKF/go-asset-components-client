@@ -66,14 +66,14 @@ func (c *AssetComponentsMock) DeleteComponentRelation(ctx context.Context, relat
 	return args.Error(0)
 }
 
-func (c *AssetComponentsMock) GetComponentSpeed(ctx context.Context, id uuid.UUID) (models.GetComponentSpeedResponse, error) {
+func (c *AssetComponentsMock) GetComponentSpeed(ctx context.Context, id uuid.UUID) (models.CalculatedSpeed, *models.SpeedConfiguration, error) {
 	args := c.Called(ctx, id)
-	return args.Get(0).(models.GetComponentSpeedResponse), args.Error(1)
+	return args.Get(0).(models.CalculatedSpeed), args.Get(1).(*models.SpeedConfiguration), args.Error(2) //nolint:gomnd
 }
 
-func (c *AssetComponentsMock) SetComponentSpeed(ctx context.Context, id uuid.UUID, speedConfiguration models.SpeedConfiguration) (models.PutComponentSpeedResponse, error) {
+func (c *AssetComponentsMock) SetComponentSpeed(ctx context.Context, id uuid.UUID, speedConfiguration models.SpeedConfiguration) error {
 	args := c.Called(ctx, id, speedConfiguration)
-	return args.Get(0).(models.PutComponentSpeedResponse), args.Error(1)
+	return args.Error(0)
 }
 
 func (c *AssetComponentsMock) DeleteComponentSpeed(ctx context.Context, id uuid.UUID) error {
