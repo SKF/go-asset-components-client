@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate
-        run: make rest/models/
+        run: make rest/models/model_component.go
 
       - name: Build
         run: go build -v ./...
