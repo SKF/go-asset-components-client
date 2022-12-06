@@ -75,7 +75,7 @@ paths:
                     id:
                       type: string
                       description: The external identifier of the resource
-                      example: 372812
+                      example: '372812'
                     type:
                       type: string
                       description: The type of the provided `provider` value
@@ -86,6 +86,7 @@ paths:
                       example: 350b180d-e9eb-48a7-ba9a-ce1dae66fd44
                 fixedSpeed:
                   type: number
+                  format: double
                   description: 'The fixed rotation speed of the shaft, expressed in RPM'
                   minimum: 0
                 positionDescription:
@@ -167,7 +168,7 @@ paths:
                       id:
                         type: string
                         description: The external identifier of the resource
-                        example: 372812
+                        example: '372812'
                       type:
                         type: string
                         description: The type of the provided `provider` value
@@ -178,6 +179,7 @@ paths:
                         example: 350b180d-e9eb-48a7-ba9a-ce1dae66fd44
                   fixedSpeed:
                     type: number
+                    format: double
                     description: 'The fixed rotation speed of the shaft, expressed in RPM'
                     minimum: 0
                   positionDescription:
@@ -214,17 +216,17 @@ paths:
                 type: shaft
                 position: 1
         '400':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthorized'
         '409':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/ComponentConflict'
         '429':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/InternalServerError'
   '/components/{component}':
     parameters:
       - name: component
@@ -287,7 +289,7 @@ paths:
                       id:
                         type: string
                         description: The external identifier of the resource
-                        example: 372812
+                        example: '372812'
                       type:
                         type: string
                         description: The type of the provided `provider` value
@@ -298,6 +300,7 @@ paths:
                         example: 350b180d-e9eb-48a7-ba9a-ce1dae66fd44
                   fixedSpeed:
                     type: number
+                    format: double
                     description: 'The fixed rotation speed of the shaft, expressed in RPM'
                     minimum: 0
                   positionDescription:
@@ -334,15 +337,15 @@ paths:
                 type: shaft
                 position: 1
         '401':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/ComponentNotFoundByID'
         '429':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/InternalServerError'
     patch:
       operationId: update-component
       summary: Update an existing component
@@ -397,7 +400,7 @@ paths:
                     id:
                       type: string
                       description: The external identifier of the resource
-                      example: 372812
+                      example: '372812'
                     type:
                       type: string
                       description: The type of the provided `provider` value
@@ -408,6 +411,7 @@ paths:
                       example: 350b180d-e9eb-48a7-ba9a-ce1dae66fd44
                 fixedSpeed:
                   type: number
+                  format: double
                   description: 'The fixed rotation speed of the shaft, expressed in RPM'
                   minimum: 0
                 positionDescription:
@@ -489,7 +493,7 @@ paths:
                       id:
                         type: string
                         description: The external identifier of the resource
-                        example: 372812
+                        example: '372812'
                       type:
                         type: string
                         description: The type of the provided `provider` value
@@ -500,6 +504,7 @@ paths:
                         example: 350b180d-e9eb-48a7-ba9a-ce1dae66fd44
                   fixedSpeed:
                     type: number
+                    format: double
                     description: 'The fixed rotation speed of the shaft, expressed in RPM'
                     minimum: 0
                   positionDescription:
@@ -536,17 +541,17 @@ paths:
                 type: shaft
                 position: 2
         '400':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/ComponentNotFoundByID'
         '429':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/InternalServerError'
     delete:
       operationId: delete-component
       summary: Delete a specific component and its attached components
@@ -561,13 +566,13 @@ paths:
         '204':
           description: If the requested component has been deleted
         '401':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthorized'
         '429':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/InternalServerError'
   '/components/{component}/relations':
     parameters:
       - name: component
@@ -613,35 +618,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetComponentRelationsResponse'
         '401':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthorized'
         '404':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/ComponentNotFoundByID'
         '429':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/InternalServerError'
     put:
       operationId: update-component-relation
       summary: Create a Relation to a Component
@@ -670,41 +655,29 @@ paths:
         '204':
           description: Relation is created or already exists
         '400':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthorized'
         '404':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/ComponentNotFoundByID'
         '429':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/InternalServerError'
+  '/components/{component}/speed':
+    parameters:
+      - name: component
+        in: path
+        required: true
+        description: Id of component
+        schema:
+          type: string
+          format: uuid
+
+
+
   '/relations/{source}/{type}/{id}/components':
     parameters:
       - name: source
@@ -761,36 +734,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetRelatedComponentsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
-        '404':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthorized'
         '429':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/InternalServerError'
   '/relations/{source}/{type}/{id}/components/{component}':
     parameters:
       - name: source
@@ -831,94 +784,18 @@ paths:
       responses:
         '204':
           description: The relation does no longer exists
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/Unauthorized'
         '404':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/ComponentNotFoundByID'
         '429':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
-  '/provisional/speed/{id}':
-    parameters:
-      - name: id
-        in: path
-        required: true
-        description: Id of component or measurment location
-        schema:
-          type: string
-      - name: type
-        in: query
-        required: true
-        description: type of the provided id
-        schema:
-          type: string
-    get:
-      operationId: get-related-speed
-      summary: List related speed
-      description: Lists speeds related to a component or a measurment location
-      tags:
-        - Speed
-      deprecated: true
-      responses:
-        '200':
-          description: List of all related speeds
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetRelatedSpeedResponse'
-        '401':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
-        '403':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
-        '404':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
-        '429':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
-        '500':
-          description: Temporary response model for all Problems
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemResponse'
+          $ref: '#/components/responses/InternalServerError'
   '/assets/{asset}/components':
     parameters:
       - name: asset
@@ -939,6 +816,8 @@ paths:
       operationId: get-asset-components
       summary: List components under an asset
       description: Lists all components under an asset
+      tags:
+        - Query
       responses:
         '200':
           description: List of all components attached to a asset
@@ -947,17 +826,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAssetComponentsResponse'
         '400':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Problem'
-        '404':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthorized'
         '429':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/InternalServerError'
   '/origins/{provider}/{provider_type}/{id}/component':
     parameters:
       - name: provider
@@ -1006,19 +883,19 @@ paths:
                   id:
                     type: string
                     format: uuid
-                    description: The unique identifer for a component that has the specified origin
+                    description: The unique identifier for a component that has the specified origin
         '400':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/ComponentNotFoundByOrigin'
         '429':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/TooManyRequests'
         '500':
-          $ref: '#/components/responses/Problem'
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     EnlightSSO:
@@ -1073,7 +950,7 @@ components:
             id:
               type: string
               description: The external identifier of the resource
-              example: 372812
+              example: '372812'
             type:
               type: string
               description: The type of the provided `provider` value
@@ -1084,6 +961,7 @@ components:
               example: 350b180d-e9eb-48a7-ba9a-ce1dae66fd44
         fixedSpeed:
           type: number
+          format: double
           description: 'The fixed rotation speed of the shaft, expressed in RPM'
           minimum: 0
         positionDescription:
@@ -1255,35 +1133,6 @@ components:
       type: string
       enum:
         - hierarchy
-    GetRelatedSpeedResponse:
-      type: object
-      properties:
-        fixedspeed:
-          type: object
-          properties:
-            id:
-              type: string
-            speed:
-              type: number
-            speedgroup:
-              type: string
-            type:
-              type: string
-          required:
-            - id
-            - speed
-            - speedgroup
-            - type
-        context:
-          type: object
-          properties:
-            id:
-              type: string
-          required:
-            - id
-      required:
-        - context
-        - fixedspeed
     GetAssetComponentsResponse:
       type: object
       properties:
@@ -1293,9 +1142,194 @@ components:
             $ref: '#/components/schemas/Component'
         count:
           type: integer
+    GetComponentSpeedResponse:
+      type: object
+      properties:
+        calculated:
+          $ref: '#/components/schemas/CalculatedSpeed'
+        configuration:
+          $ref: '#/components/schemas/SpeedConfiguration'
+      required:
+        - calculated
+    DeleteComponentSpeedResponse:
+      type: object
+    PutComponentSpeedRequest:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/SpeedConfiguration'
+      required:
+        - configuration
+    PutComponentSpeedResponse:
+      type: object
+      properties:
+        calculated:
+          $ref: '#/components/schemas/CalculatedSpeed'
+        configuration:
+          $ref: '#/components/schemas/SpeedConfiguration'
+      required:
+        - calculated
+        - configuration
+    SpeedConfiguration:
+      discriminator:
+        propertyName: type
+        mapping:
+          fixedSpeed: '#/components/schemas/FixedSpeedConfiguration'
+          variableSpeed: '#/components/schemas/VariableSpeedConfiguration'
+      oneOf:
+        - $ref: '#/components/schemas/FixedSpeedConfiguration'
+        - $ref: '#/components/schemas/VariableSpeedConfiguration'
+      required:
+        - type
+    FixedSpeedConfiguration:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - fixed
+            - variable
+        unit:
+          type: string
+        value:
+          type: number
+          format: double
+      required:
+        - type
+        - unit
+        - value
+    VariableSpeedConfiguration:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - fixed
+            - variable
+        unit:
+          type: string
+        maxValue:
+          type: number
+          format: double
+        minValue:
+          type: number
+          format: double
+      required:
+        - type
+        - unit
+        - maxValue
+        - minValue
+    CalculatedSpeed:
+      discriminator:
+        propertyName: type
+        mapping:
+          unknownSpeed: '#/components/schemas/UnknownSpeed'
+          fixedSpeed: '#/components/schemas/FixedSpeed'
+          variableSpeed: '#/components/schemas/VariableSpeed'
+      oneOf:
+        - $ref: '#/components/schemas/UnknownSpeed'
+        - $ref: '#/components/schemas/FixedSpeed'
+        - $ref: '#/components/schemas/VariableSpeed'
+      required:
+        - type
+    FixedSpeed:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - fixed
+        unit:
+          type: string
+        value:
+          type: number
+          format: double
+      required:
+        - type
+        - unit
+        - value
+    VariableSpeed:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - variable
+        unit:
+          type: string
+        maxValue:
+          type: number
+          format: double
+        minValue:
+          type: number
+          format: double
+      required:
+        - type
+        - unit
+        - maxValue
+        - minValue
+    UnknownSpeed:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - unknown
+        reason:
+          type: string
+          enum:
+            - no_speed_configured
+        details:
+          type: string
+      required:
+        - type
+        - reason
+        - details
   responses:
-    Problem:
-      description: Temporary response model for all Problems
+    BadRequest:
+      description: The supplied parameters did not meet the requirements
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemResponse'
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemResponse'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemResponse'
+    InternalServerError:
+      description: An unexpected error occurred
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemResponse'
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemResponse'
+    ComponentNotFoundByID:
+      description: No component was found with the provided id
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemResponse'
+    ComponentNotFoundByOrigin:
+      description: No component was found with the provided origin
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemResponse'
+    ComponentConflict:
+      description: Component with the same identifier already exists
       content:
         application/problem+json:
           schema:

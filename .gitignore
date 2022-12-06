@@ -1,3 +1,2 @@
-rest/models/
+rest/models/model_*
 .idea
-
