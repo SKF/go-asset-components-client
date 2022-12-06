@@ -21,7 +21,7 @@ rest/models/model_%.go: rest/openapi.yaml
 			--global-property models,modelDocs=false \
 			--generator-name go \
 			--additional-properties packageName=models \
-			--output $(shell dirname $@)
+			--output $(@D)
 
 .PHONY: clean
 clean:
