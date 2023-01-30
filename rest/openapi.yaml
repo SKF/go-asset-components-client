@@ -21,12 +21,14 @@ tags:
     description: Handle relations between a component and an external source
 security:
   - EnlightSSO: []
-  - ClientID: []
 paths:
   /components:
     post:
       operationId: create-component
       summary: Create a new component
+      security:
+        - ClientID: []
+          EnlightSSO: []
       description: 'The caller is required to have the `ASSET_COMPONENTS::CREATE_COMPONENT` action on the `asset`.'
       tags:
         - Manage
@@ -87,7 +89,8 @@ paths:
                 fixedSpeed:
                   type: number
                   format: double
-                  description: 'The fixed rotation speed of the shaft, expressed in RPM'
+                  description: 'The fixed rotation speed of the shaft, expressed in RPM. Has been replaced with speed configurations to allow other speeds than fixed speed.'
+                  deprecated: true
                   minimum: 0
                 positionDescription:
                   type: string
@@ -180,7 +183,8 @@ paths:
                   fixedSpeed:
                     type: number
                     format: double
-                    description: 'The fixed rotation speed of the shaft, expressed in RPM'
+                    description: 'The fixed rotation speed of the shaft, expressed in RPM. Has been replaced with speed configurations to allow other speeds than fixed speed.'
+                    deprecated: true
                     minimum: 0
                   positionDescription:
                     type: string
@@ -239,6 +243,9 @@ paths:
     get:
       operationId: get-component-by-id
       summary: Get an existing component by its identifier
+      security:
+        - ClientID: []
+          EnlightSSO: []
       description: 'The caller is required to have the `ASSET_COMPONENTS::GET_COMPONENT_BY_ID` action on the `component`.'
       tags:
         - Query
@@ -301,7 +308,8 @@ paths:
                   fixedSpeed:
                     type: number
                     format: double
-                    description: 'The fixed rotation speed of the shaft, expressed in RPM'
+                    description: 'The fixed rotation speed of the shaft, expressed in RPM. Has been replaced with speed configurations to allow other speeds than fixed speed.'
+                    deprecated: true
                     minimum: 0
                   positionDescription:
                     type: string
@@ -349,6 +357,9 @@ paths:
     patch:
       operationId: update-component
       summary: Update an existing component
+      security:
+        - ClientID: []
+          EnlightSSO: []
       description: |-
         As of now the endpoint requires you to send in the whole body including fields that is not intended for the update.
 
@@ -412,7 +423,8 @@ paths:
                 fixedSpeed:
                   type: number
                   format: double
-                  description: 'The fixed rotation speed of the shaft, expressed in RPM'
+                  description: 'The fixed rotation speed of the shaft, expressed in RPM. Has been replaced with speed configurations to allow other speeds than fixed speed.'
+                  deprecated: true
                   minimum: 0
                 positionDescription:
                   type: string
@@ -505,7 +517,8 @@ paths:
                   fixedSpeed:
                     type: number
                     format: double
-                    description: 'The fixed rotation speed of the shaft, expressed in RPM'
+                    description: 'The fixed rotation speed of the shaft, expressed in RPM. Has been replaced with speed configurations to allow other speeds than fixed speed.'
+                    deprecated: true
                     minimum: 0
                   positionDescription:
                     type: string
@@ -555,6 +568,9 @@ paths:
     delete:
       operationId: delete-component
       summary: Delete a specific component and its attached components
+      security:
+        - ClientID: []
+          EnlightSSO: []
       description: |-
         This endpoint will delete the targeted component and any attached components. The operation is idempotent, so deleting
         twice in a row should both result in `204 No Content` even if the second operation did not do anything.
@@ -675,9 +691,96 @@ paths:
         schema:
           type: string
           format: uuid
-
-
-
+    get:
+      operationId: get-speed-with-configuration
+      x-feature-flag: speed
+      summary: Describes the componet's speed and its speed configuration
+      security:
+        - ClientID: []
+          EnlightSSO: []
+      description: Describes the componet's speed and its speed configuration
+      tags:
+        - Speed
+      responses:
+        '200':
+          description: The speed of component if it has been configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetComponentSpeedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: delete-speed-configuration
+      x-feature-flag: speed
+      summary: deletes the configuration of the components speed to the inputed configuration
+      security:
+        - ClientID: []
+          EnlightSSO: []
+      description: Deletes the configuration of the components speed to the inputed configuration
+      tags:
+        - Speed
+      responses:
+        '200':
+          description: Succes returns an empty object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteComponentSpeedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ComponentNotFoundByID'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      operationId: put-speed-configuration
+      x-feature-flag: speed
+      summary: Sets the configuration of the components speed to the inputed configuration
+      security:
+        - ClientID: []
+          EnlightSSO: []
+      description: Sets the configuration of the components speed to the inputed configuration
+      tags:
+        - Speed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComponentSpeedRequest'
+      responses:
+        '200':
+          description: The speed of component if it has been configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetComponentSpeedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ComponentNotFoundByID'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   '/relations/{source}/{type}/{id}/components':
     parameters:
       - name: source
@@ -815,6 +918,9 @@ paths:
     get:
       operationId: get-asset-components
       summary: List components under an asset
+      security:
+        - ClientID: []
+          EnlightSSO: []
       description: Lists all components under an asset
       tags:
         - Query
@@ -861,6 +967,9 @@ paths:
     get:
       operationId: get-component-by-origin
       summary: Get component by its origin
+      security:
+        - ClientID: []
+          EnlightSSO: []
       description: |-
         Find the identifier of a component by its `origin` that can be set when creating a component.
 
@@ -962,7 +1071,8 @@ components:
         fixedSpeed:
           type: number
           format: double
-          description: 'The fixed rotation speed of the shaft, expressed in RPM'
+          description: 'The fixed rotation speed of the shaft, expressed in RPM. Has been replaced with speed configurations to allow other speeds than fixed speed.'
+          deprecated: true
           minimum: 0
         positionDescription:
           type: string
@@ -1144,23 +1254,24 @@ components:
           type: integer
     GetComponentSpeedResponse:
       type: object
+      required:
+        - calculated
+        - configuration
       properties:
         calculated:
           $ref: '#/components/schemas/CalculatedSpeed'
         configuration:
           $ref: '#/components/schemas/SpeedConfiguration'
-      required:
-        - calculated
     DeleteComponentSpeedResponse:
       type: object
-    PutComponentSpeedRequest:
+    SetComponentSpeedRequest:
       type: object
+      required:
+        - configuration
       properties:
         configuration:
           $ref: '#/components/schemas/SpeedConfiguration'
-      required:
-        - configuration
-    PutComponentSpeedResponse:
+    SetComponentSpeedResponse:
       type: object
       properties:
         calculated:
@@ -1200,6 +1311,11 @@ components:
         - value
     VariableSpeedConfiguration:
       type: object
+      required:
+        - type
+        - min
+        - max
+        - unit
       properties:
         type:
           type: string
@@ -1208,17 +1324,15 @@ components:
             - variable
         unit:
           type: string
-        maxValue:
+        min:
           type: number
           format: double
-        minValue:
+        max:
           type: number
           format: double
-      required:
-        - type
-        - unit
-        - maxValue
-        - minValue
+        nominal:
+          type: number
+          format: double
     CalculatedSpeed:
       discriminator:
         propertyName: type
@@ -1234,6 +1348,10 @@ components:
         - type
     FixedSpeed:
       type: object
+      required:
+        - type
+        - unit
+        - value
       properties:
         type:
           type: string
@@ -1244,12 +1362,13 @@ components:
         value:
           type: number
           format: double
-      required:
-        - type
-        - unit
-        - value
     VariableSpeed:
       type: object
+      required:
+        - type
+        - min
+        - max
+        - unit
       properties:
         type:
           type: string
@@ -1257,17 +1376,15 @@ components:
             - variable
         unit:
           type: string
-        maxValue:
+        min:
           type: number
           format: double
-        minValue:
+        max:
           type: number
           format: double
-      required:
-        - type
-        - unit
-        - maxValue
-        - minValue
+        nominal:
+          type: number
+          format: double
     UnknownSpeed:
       type: object
       properties:
