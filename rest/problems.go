@@ -18,6 +18,7 @@ type ComponentsProblemDecoder struct{}
 
 func (d *ComponentsProblemDecoder) DecodeProblem(ctx context.Context, resp *http.Response) (problems.Problem, error) {
 	defer resp.Body.Close()
+
 	bb, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read body: %w", err)
@@ -34,9 +35,9 @@ func (d *ComponentsProblemDecoder) DecodeProblem(ctx context.Context, resp *http
 		if err := json.Unmarshal(bb, &validationProblem); err != nil {
 			return nil, fmt.Errorf("BasicProblem json decoder: %w", err)
 		}
+
 		return validationProblem, nil
 	default:
-
 		return basicProblem, nil
 	}
 }
