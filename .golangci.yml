@@ -5,6 +5,7 @@ run:
     - rest/models
 # all available settings of specific linters
 linters-settings:
+  timeout: 3m
   errcheck:
     # default is false: such cases aren't reported by default.
     check-blank: true
