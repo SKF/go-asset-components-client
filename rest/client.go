@@ -44,7 +44,7 @@ func NewClient(opts ...Option) Client {
 		append([]Option{
 			// Defaults to production stage if no option is supplied
 			WithStage(stages.StageProd),
-			rest.WithProblemDecoder(new(ComponentsProblemDecoder)),
+			rest.WithProblemDecoder(new(componentsProblemDecoder)),
 		}, opts...)...,
 	)
 

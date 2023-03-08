@@ -36,7 +36,7 @@ func TestProblemDecoder_DecodeProblem(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
-			cd := ComponentsProblemDecoder{}
+			cd := componentsProblemDecoder{}
 
 			bs, err := json.Marshal(tt.body)
 			require.NoError(t, err)
@@ -56,7 +56,7 @@ func TestProblemDecoder_DecodeProblem(t *testing.T) {
 }
 
 func TestValidation(t *testing.T) {
-	cd := ComponentsProblemDecoder{}
+	cd := componentsProblemDecoder{}
 
 	resBody := problems.Validation(problems.ValidationReason{
 		Name:   "req",

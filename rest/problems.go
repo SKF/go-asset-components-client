@@ -10,13 +10,9 @@ import (
 	"github.com/SKF/go-rest-utility/problems"
 )
 
-type ProblemDecoder interface {
-	DecodeProblem(context.Context, *http.Response) (problems.Problem, error)
-}
+type componentsProblemDecoder struct{}
 
-type ComponentsProblemDecoder struct{}
-
-func (d *ComponentsProblemDecoder) DecodeProblem(ctx context.Context, resp *http.Response) (problems.Problem, error) {
+func (d *componentsProblemDecoder) DecodeProblem(_ context.Context, resp *http.Response) (problems.Problem, error) {
 	defer resp.Body.Close()
 
 	bb, err := io.ReadAll(resp.Body)
