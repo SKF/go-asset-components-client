@@ -3,7 +3,7 @@ module github.com/SKF/go-asset-components-client
 go 1.19
 
 require (
-	github.com/SKF/go-rest-utility v0.13.1
+	github.com/SKF/go-rest-utility v0.13.2
 	github.com/SKF/go-utility/v2 v2.33.5
 	github.com/stretchr/testify v1.8.2
 )
@@ -18,10 +18,10 @@ require (
 	github.com/Microsoft/go-winio v0.6.0 // indirect
 	github.com/SKF/go-enlight-middleware v0.8.0 // indirect
 	github.com/aws/aws-sdk-go v1.44.249 // indirect
-	github.com/aws/aws-sdk-go-v2 v1.17.8 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.32 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.26 // indirect
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.7 // indirect
+	github.com/aws/aws-sdk-go-v2 v1.18.0 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.33 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.27 // indirect
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.19.5 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
