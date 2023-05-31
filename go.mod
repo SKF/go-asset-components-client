@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/SKF/go-rest-utility v0.13.2
 	github.com/SKF/go-utility/v2 v2.33.5
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 )
 
 require (
